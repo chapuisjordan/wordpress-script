@@ -1,0 +1,32 @@
+#! /bin/bash
+
+echo "Installation d'apache2 : ";
+sudo apt install apache2 ;
+
+echo "Installation de php7.0";
+sudo apt install php7.0;
+
+echo "Installation de php7.0 mysql";
+sudo apt install php7.0-mysql;
+
+echo "Installation de libapache2-mod-php7.0";
+sudo apt install libapache2-mod-php7.0;
+
+echo "Installation de Wordpress";
+sudo curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+sudo chmod 777 wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+wp core download;
+echo "Nom du site : ";
+read nomSite;
+echo "Nom d'utilisateur admin : ";
+read nomAdmin;
+echo "Mot de passe admin : ";
+read mdpAdmin;
+echo "Votre adresse e-mail:";
+read email;
+echo "Création de votre wordpresse : ";
+wp config create --dbname=wordpress --dbuser=root --dbpass=0000 --dbhost=localhost --allow-root;
+wp core install --url=192.168.33.10 --title=$nomSite --admin_user=$nomAdmin --admin_password=$pdmAdmin --admin_email=$email --skip-email;
+
+sudo service apache2 restart

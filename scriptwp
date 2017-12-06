@@ -1,0 +1,99 @@
+#! /bin/bash
+
+#plugin or thème :
+
+echo "Voulez-vous intéragir avec le thème ou le plugin";
+select response in 'theme' 'plugin';do
+	case  $response in
+        theme ) option1='theme';break;;
+        plugin ) option1='plugin';break;;
+        esac
+done
+
+if [ $option1 == "theme" ]
+  then
+  echo "Vous voulez ? ";
+  select response2 in 'installer' 'supprimer' 'activer' 'chercher';do
+	case $response2 in
+	installer ) option2='installer';break;;
+	supprimer ) option2='supprimer';break;;
+	activer ) option2='activer';break;;
+	chercher ) option2='chercher';break;;
+	esac
+  done
+
+	##########THEME##########
+	if [ $option2 == "installer" ]
+	  then
+	    echo "Quelle thème voulez-vous installer ? ";
+	      read nameTheme;
+	      wp theme is-installed $nameTheme;
+	      statusTheme=$?
+	      if [[ $statusTheme -eq "0" ]]
+	      	then
+				 		echo "Le thème est déjà installé";
+				else
+						echo "Installation du thème";
+	 					wp theme install $nameTheme;
+	  		fi
+
+	elif [ $option2 == "supprimer" ];
+	  then
+	    echo "Quelle thème voulez-vous supprimer ? ";
+	    read nameTheme;
+			wp theme deactivate $nameTheme;
+	    wp theme uninstall $nameTheme;
+	elif [ $option2 == "chercher" ];
+		then
+			echo "Taper un nom de thème"
+			read nameTheme
+			wp theme search $nameTheme;
+	else
+	    echo "Quelle thème voulez-vous activer ? ";
+	    read nameTheme;
+	    wp theme activate $nameTheme;
+	fi
+
+else #######################PLUGIN############
+	echo "Vous voulez ? ";
+  select response3 in 'installer' 'supprimer' 'activer' 'chercher';do
+	case $response3 in
+	installer ) option3='installer';break;;
+	supprimer ) option3='supprimer';break;;
+	activer ) option3='activer';break;;
+	chercher ) option3='chercher';break;;
+	esac
+  done
+
+	if [ $option3 == "installer" ]
+		then
+			echo "Quelle plugin voulez-vous installer ? ";
+				read namePlugin;
+				wp plugin is-installed $namePlugin;
+				statusPlugin=$?
+				if [[ $statusPlugin -eq "0" ]]
+					then
+						echo "Le plugin est déjà installé";
+				else
+						echo "Installation du plugin";
+						wp plugin install $namePlugin;
+				fi
+
+	elif [ $option3 == "supprimer" ];
+		then
+			echo "Quelle plugin voulez-vous supprimer ? ";
+			read namePlugin;
+			wp plugin deactivate $namePlugin;
+			wp plugin uninstall $namePlugin;
+	elif [ $option3 == "chercher" ]	;
+		then
+			echo "Taper un nom de plugin"
+			read namePlugin
+			wp plugin search $namePlugin;
+	else
+			echo "Quelle plugin voulez-vous activer ? ";
+			read namePlugin;
+			wp plugin activate $namePlugin;
+	fi
+
+fi
